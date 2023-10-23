@@ -29,10 +29,12 @@ export class NewsService {
   constructor() { }
 
   getTopHeadlines(): Observable<Article[]>{
-   return this.executeQuery<NewsResponse>(`/top-headlines?category=business`)
+
+    return this.getArticlesByCategory('business')
+  /*  return this.executeQuery<NewsResponse>(`/top-headlines?category=business`)
    .pipe(
       map(resp => resp.articles)
-   )
+   ) */
   }
 
 

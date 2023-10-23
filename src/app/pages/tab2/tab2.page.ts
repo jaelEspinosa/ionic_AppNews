@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { IonInfiniteScroll } from '@ionic/angular';
 import { Article } from 'src/app/interfaces';
 import { NewsService } from 'src/app/services/news.service';
 
@@ -8,6 +9,9 @@ import { NewsService } from 'src/app/services/news.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit{
+
+  @ViewChild( IonInfiniteScroll, { static:true } ) infiniteScroll!: IonInfiniteScroll; // añadiendo { static:true } al @ViewChild
+                                                                                      //  evitamos que sea undefined en el ngOnInit
 
   public finalData:string = ''
 
@@ -24,6 +28,8 @@ export class Tab2Page implements OnInit{
   constructor() {}
 
   ngOnInit() {
+    console.log( this.infiniteScroll) // en este momento es undefined, si necesitase asignar valores tendria un problema ya que el objeto es undefined
+
     this.newsSvc.getTopHeadlinesByCategory( this.selectedCategory )
      .subscribe( articles =>{
       this.articles = [...articles]
@@ -39,7 +45,7 @@ export class Tab2Page implements OnInit{
 
   }
 
- loadData( event: any ) {
+ loadData() {
   console.log( this.articles[this.articles.length-1].title)
   setTimeout(() => {
 
@@ -47,13 +53,13 @@ export class Tab2Page implements OnInit{
     .subscribe( articles => {
 
       if (this.articles[this.articles.length-1].title === articles[articles.length-1].title ){
-        event.target.disabled = true;
+        this.infiniteScroll.disabled = true;
         this.finalData = 'Has llegado al final!'
         return
       }
       this.articles = articles;
 
-      event.target.complete();
+      this.infiniteScroll.complete();
     })
   }, 700);
 

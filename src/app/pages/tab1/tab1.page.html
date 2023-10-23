@@ -15,5 +15,15 @@
 
    <app-articles  [articles]="articles"></app-articles>
 
+   <ion-infinite-scroll
+   threshold="25%"
+
+   position="bottom"
+   (ionInfinite)="loadData()"
+   >
+<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando...">
+</ion-infinite-scroll-content>
+</ion-infinite-scroll>
+<h5 *ngIf="finalData" style="text-align: center; color: var(--ion-color-primary);">{{finalData}}</h5>
 
 </ion-content>
